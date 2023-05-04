@@ -1,4 +1,3 @@
-from django.http.response import HttpResponse
 from django.shortcuts import render
 
 
@@ -6,6 +5,17 @@ def pages(request):
     return render(request, 'pagesTemplate/pages.html')
 
 
-def homepage(request):
-    return render(request, 'pagesTemplate/home.html')
+def myproject(request):
+    return render(request, 'pagesTemplate/myproject.html')
+
+
+def projects(request):
+    return render(request, 'pagesTemplate/projects.html')
+
+
+def projectname(request, project_name):
+    data = {
+        'project_name': project_name
+    }
+    return render(request, 'pagesTemplate/myproject.html', data)
 # Create your views here.
