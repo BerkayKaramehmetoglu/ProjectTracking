@@ -13,6 +13,10 @@ def projects(request):
     return render(request, 'pagesTemplate/projects.html')
 
 
+def register(request):
+    return render(request, 'pagesTemplate/register.html')
+
+
 def projectname(request, project_name):
     data = {
         'project_name': project_name
