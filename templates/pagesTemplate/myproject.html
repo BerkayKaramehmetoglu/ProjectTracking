@@ -1,7 +1,55 @@
-{% extends "main.html"%}
+{% extends "main.html" %}
 {% load static %}
 {% block title %} My Project Pag {% endblock %}
 {% block content %}
-    <h1>this here for student activity</h1>
-    {{ project_name }}
+    <div class="card bg-light" style="height: 23em;">
+        <div class="card-body position-absolute top-0 start-50 translate-middle-x"
+             style="height: 23em; width: 30em;">
+            <h5 class="text-center fw-bold fs-4">CREAT YOUR PROJECT</h5>
+            <form>
+                <div class="mb-2 fw-bold"><label for="exampleInputText1" class="form-label">Project Name</label> <input
+                        type="text" class="form-control" id="exampleInputText1"></div>
+                <div class="mb-2 fw-bold"><label for="exampleInputEmail1" class="form-label">Project Description</label>
+                    <input
+                            type="email" class="form-control" id="exampleInputEmail1"></div>
+                <div class="mb-2 fw-bold"><label for="exampleInputPassword1" class="form-label">Project
+                    Technology</label>
+                    <input type="password" class="form-control" id="exampleInputPassword1"></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault">Active Project</label></div>
+                <button type="submit" class="btn btn-success mt-1 fs-5 btn-sm">Upload Your Project</button>
+            </form>
+        </div>
+    </div>
+    <div class="card bg-light mt-3" style="height: 20em;">
+        <div class="card-body position-absolute top-0 start-50 translate-middle-x"
+             style="height: 23em; width: 100em;">
+            <table class="table mt-5 text-center table-striped">
+                <thead>
+                <tr class="fs-4">
+                    <th scope="col">#</th>
+                    <th scope="col">Project Name</th>
+                    <th scope="col">Project Description</th>
+                    <th scope="col">Project Technology</th>
+                    <th scope="col">Is Active</th>
+                </tr>
+                </thead>
+                <tbody class="fs-5">
+                {% for my_project in my_projects %}
+                    <tr>
+                        <th scope="row">{{ my_project.id }}</th>
+                        <td>{{ my_project.project_name }}</td>
+                        <td>{{ my_project.project_description }}</td>
+                        <td>{{ my_project.project_technology }}</td>
+                        <td>{{ my_project.is_active }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+
 {% endblock %}
