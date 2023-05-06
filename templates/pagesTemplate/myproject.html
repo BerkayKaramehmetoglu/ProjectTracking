@@ -6,16 +6,16 @@
         <div class="card-body position-absolute top-0 start-50 translate-middle-x"
              style="height: 23em; width: 30em;">
             <h5 class="text-center fw-bold fs-4">CREAT YOUR PROJECT</h5>
-            <form>
+            <form action="{% url 'myproject' %}" method="POST">
+                {% csrf_token %}
                 <div class="mb-2 fw-bold"><label for="exampleInputText1" class="form-label">Project Name</label> <input
-                        type="text" class="form-control" id="exampleInputText1"></div>
-                <div class="mb-2 fw-bold"><label for="exampleInputEmail1" class="form-label">Project Description</label>
-                    <input
-                            type="email" class="form-control" id="exampleInputEmail1"></div>
-                <div class="mb-2 fw-bold"><label for="exampleInputPassword1" class="form-label">Project
+                        type="text" class="form-control" id="exampleInputText1" name="project_name"></div>
+                <div class="mb-2 fw-bold"><label for="exampleInputText2" class="form-label">Project Description</label>
+                    <input type="text" class="form-control" id="exampleInputText2" name="project_description"></div>
+                <div class="mb-2 fw-bold"><label for="exampleInputText3" class="form-label">Project
                     Technology</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1"></div>
-                <div class="form-check"><input class="form-check-input" type="checkbox" id="flexCheckDefault">
+                    <input type="text" class="form-control" id="exampleInputText3" name="project_technology"></div>
+                <div class="form-check"><input class="form-check-input" name="is_active" type="checkbox" id="flexCheckDefault">
                     <label class="form-check-label" for="flexCheckDefault">Active Project</label></div>
                 <button type="submit" class="btn btn-success mt-1 fs-5 btn-sm">Upload Your Project</button>
             </form>
@@ -35,9 +35,9 @@
         {% for my_project in my_projects %}
             <tr>
                 <th scope="row">{{ my_project.id }}</th>
-                <td>{{ my_project.project_name | title}}</td>
-                <td>{{ my_project.project_description | title}}</td>
-                <td>{{ my_project.project_technology | title}}</td>
+                <td>{{ my_project.project_name | title }}</td>
+                <td>{{ my_project.project_description | title }}</td>
+                <td>{{ my_project.project_technology | title }}</td>
                 <td>{% if my_project.is_active == True %}
                     {{ "Active" }}
                 {% else %}
