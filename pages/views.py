@@ -15,9 +15,9 @@ def myprojects(request):
 
 
 def projects(request):
-    active_projects = ProjectModels.objects.filter(is_active=1)
+    projects = ProjectModels.objects.all()
     return render(request, 'pagesTemplate/projects.html', {
-        'active_projects': active_projects
+        'projects': projects
     })
 
 

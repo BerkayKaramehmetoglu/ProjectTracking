@@ -1,6 +1,6 @@
 {% extends "main.html" %}
 {% load static %}
-{% block title %} My Project Pag {% endblock %}
+{% block title %} My Project {% endblock %}
 {% block content %}
     <div class="card bg-light" style="height: 23em;">
         <div class="card-body position-absolute top-0 start-50 translate-middle-x"
@@ -21,34 +21,32 @@
             </form>
         </div>
     </div>
-    <div class="card bg-light mt-3" style="height: 20em;">
-        <div class="card-body position-absolute top-0 start-50 translate-middle-x"
-             style="height: 23em; width: 100em;">
-            <table class="table mt-5 text-center table-striped">
-                <thead>
-                <tr class="fs-4">
-                    <th scope="col">#</th>
-                    <th scope="col">Project Name</th>
-                    <th scope="col">Project Description</th>
-                    <th scope="col">Project Technology</th>
-                    <th scope="col">Is Active</th>
-                </tr>
-                </thead>
-                <tbody class="fs-5">
-                {% for my_project in my_projects %}
-                    <tr>
-                        <th scope="row">{{ my_project.id }}</th>
-                        <td>{{ my_project.project_name }}</td>
-                        <td>{{ my_project.project_description }}</td>
-                        <td>{{ my_project.project_technology }}</td>
-                        <td>{{ my_project.is_active }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-
-        </div>
-    </div>
+    <table class="table mt-5 text-center table-striped">
+        <thead>
+        <tr class="fs-4">
+            <th scope="col">#</th>
+            <th scope="col">Project Name</th>
+            <th scope="col">Project Description</th>
+            <th scope="col">Project Technology</th>
+            <th scope="col">Is Active</th>
+        </tr>
+        </thead>
+        <tbody class="fs-5">
+        {% for my_project in my_projects %}
+            <tr>
+                <th scope="row">{{ my_project.id }}</th>
+                <td>{{ my_project.project_name | title}}</td>
+                <td>{{ my_project.project_description | title}}</td>
+                <td>{{ my_project.project_technology | title}}</td>
+                <td>{% if my_project.is_active == True %}
+                    {{ "Active" }}
+                {% else %}
+                    {{ "Not Active" }}
+                {% endif %} </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
 
 
