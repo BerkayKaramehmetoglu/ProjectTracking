@@ -1,0 +1,74 @@
+{% extends "main.html" %}
+{% load static %}
+{% block title %} Project Owner List {% endblock %}
+{% block content %}
+    <table class="table text-center table-striped">
+        <thead>
+        <tr class="fs-4">
+            <th scope="col">Project Owner Name</th>
+            <th scope="col">Project Name</th>
+            <th scope="col">Project Description</th>
+            <th scope="col">Project Technology</th>
+            <th scope="col">Time</th>
+            <th scope="col">Add/Don't Add</th>
+        </tr>
+        </thead>
+        <tbody class="fs-5">
+        {% for project in projects %}
+            {% if project.is_active == True %}
+                <tr>
+                    <td>{{ project.project_owner }}</td>
+                    <td>{{ project.project_name }}</td>
+                    <td>
+                        <a class="btn transparent-btn" data-bs-toggle="collapse" href="#collapse1{{ project.id }}"
+                           role="button"
+                           aria-expanded="false" aria-controls="collapse1">
+                            {{ project.project_description|truncatechars:20 }}
+                        </a>
+                    </td>
+                    <td>{{ project.project_technology }}</td>
+                    <td>{{ project.created_at }}</td>
+                    <td>
+                        <form method="POST">
+                            {% csrf_token %}
+                            {% if project.add == True %}
+                                <button type="submit" class="btn btn-success btn-sm disabled" name="add"
+                                        value="{{ project.id }}">Add
+                                </button>
+                            {% elif project.add == False %}
+                                <button type="submit" class="btn btn-danger btn-sm disabled" name="dont_add"
+                                        value="{{ project.id }}">Don't Add
+                                </button>
+                            {% else %}
+                                <button type="submit" class="btn btn-success btn-sm" name="add"
+                                        value="{{ project.id }}">Add
+                                </button>
+                                <button type="submit" class="btn btn-danger btn-sm" name="dont_add"
+                                        value="{{ project.id }}">Don't Add
+                                </button>
+                            {% endif %}
+                        </form>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <div class="collapse" id="collapse1{{ project.id }}">
+                            <div class="card card-body d-flex align-items-center justify-content-center">
+                                <div class="card-text-content">
+                                    {{ project.project_description }}
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+    <style>
+        .card-text-content {
+            overflow: auto;
+            max-width: 90em;
+        }
+    </style>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block title %} Authorize {% endblock %}
+{% include '_alert.html' %}
+{% block content %}
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col">
+                <h5 class="card-title text-center fw-bold mt-2 fs-3">Create Admin</h5>
+                <form action="{% url 'authorized' %}" class="mt-4" method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="re_password" class="form-label">Re-Password</label>
+                        <input type="password" class="form-control" id="re_password" name="re_password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" name="create_admin">Submit</button>
+                </form>
+            </div>
+            <div class="col">
+                <table class="table text-center table-striped">
+                    <thead>
+                    <tr class="fs-4">
+                        <th scope="col">Project Owner Name</th>
+                        <th scope="col">Authorize</th>
+                    </tr>
+                    </thead>
+                    <tbody class="fs-5">
+                    {% for u in users %}
+                        <tr>
+                            <td>{{ u.username }}</td>
+                            <td>
+                                {% if not u.is_superuser and not u.is_staff %}
+                                    <form action="{% url 'authorized' %}" method="POST">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-primary btn-sm" name="authorized"
+                                                value="{{ u.id }}">Authorize
+                                        </button>
+                                    </form>
+                                {% else %}
+                                    <button class="btn btn-success btn-sm disabled">Authorized
+                                    </button>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

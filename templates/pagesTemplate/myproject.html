@@ -2,21 +2,32 @@
 {% load static %}
 {% block title %} My Project {% endblock %}
 {% block content %}
-    <div class="card bg-light" style="height: 23em;">
-        <div class="card-body position-absolute top-0 start-50 translate-middle-x"
-             style="height: 23em; width: 30em;">
-            <h5 class="text-center fw-bold fs-4">CREAT YOUR PROJECT</h5>
+    {% include '_alert.html' %}
+    <div class="card bg-light" style="height: 600px;">
+        <div class="card-body position-absolute top-0 start-50 translate-middle-x bg-light"
+             style="height: 598px; width: 700px;">
+            <h5 class="text-center fw-bold fs-3">CREAT YOUR PROJECT</h5>
             <form action="{% url 'myproject' %}" method="POST">
                 {% csrf_token %}
-                <div class="mb-2 fw-bold"><label for="exampleInputText1" class="form-label">Project Name</label> <input
-                        type="text" class="form-control" id="exampleInputText1" name="project_name"></div>
-                <div class="mb-2 fw-bold"><label for="exampleInputText2" class="form-label">Project Description</label>
-                    <input type="text" class="form-control" id="exampleInputText2" name="project_description"></div>
-                <div class="mb-2 fw-bold"><label for="exampleInputText3" class="form-label">Project
-                    Technology</label>
-                    <input type="text" class="form-control" id="exampleInputText3" name="project_technology"></div>
-                <div class="form-check"><input class="form-check-input" name="is_active" type="checkbox" id="flexCheckDefault">
-                    <label class="form-check-label" for="flexCheckDefault">Active Project</label></div>
+                <div class="mb-3">
+                    <label class="from-label fw-bold fs-5" for="{{ form.project_name.id_for_label }}">Project
+                        Name</label>
+                    {{ form.project_name }}
+                </div>
+                <div class="mb-3">
+                    <label class="from-label fw-bold fs-5" for="{{ form.project_description.id_for_label }}">Project
+                        Description</label>
+                    {{ form.project_description }}
+                </div>
+                <div class="mb-3">
+                    <label class="from-label fw-bold fs-5" for="{{ form.project_technology.id_for_label }}">Project
+                        Technology</label>
+                    {{ form.project_technology }}
+                </div>
+                <div class="mb-3">
+                    <label class="from-label fs-5" for="{{ form.is_active.id_for_label }}">Active Project</label>
+                    {{ form.is_active }}
+                </div>
                 <button type="submit" class="btn btn-success mt-1 fs-5 btn-sm">Upload Your Project</button>
             </form>
         </div>
@@ -24,30 +35,137 @@
     <table class="table mt-5 text-center table-striped">
         <thead>
         <tr class="fs-4">
-            <th scope="col">#</th>
+            <th scope="col">
+                <div class="dropdown">
+                    <button class="btn btn-light dropdown-toggle" type="button" id="actionsDropdown"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <input class="form-check-input" type="checkbox" id="myCheckbox3" disabled>
+                        <label class="form-check-label" for="myCheckbox3"></label>
+                        <input class="form-check-input" type="checkbox" id="myCheckbox" disabled>
+                        <label class="form-check-label" for="myCheckbox"></label>
+                        <input class="form-check-input " type="checkbox" id="myCheckbox2" disabled>
+                        <label class="form-check-label" for="myCheckbox2"></label>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="actionsDropdown">
+                        <li><a class="dropdown-item"><input class="form-check-input" type="checkbox" id="myCheckbox"
+                                                            disabled>
+                            <label class="form-check-label" for="myCheckbox"></label>Accepted</a></li>
+                        <li><a class="dropdown-item"><input class="form-check-input " type="checkbox" id="myCheckbox2"
+                                                            disabled>
+                            <label class="form-check-label" for="myCheckbox2"></label>Not Accepted</a></li>
+                        <li><a class="dropdown-item"><input class="form-check-input" type="checkbox" id="myCheckbox3"
+                                                            disabled>
+                            <label class="form-check-label" for="myCheckbox3"></label>Not Decided</a></li>
+                    </ul>
+                </div>
+            </th>
             <th scope="col">Project Name</th>
             <th scope="col">Project Description</th>
             <th scope="col">Project Technology</th>
-            <th scope="col">Is Active</th>
+            <th scope="col">Is It Active</th>
+            <th scope="col">Update</th>
         </tr>
         </thead>
-        <tbody class="fs-5">
-        {% for my_project in my_projects %}
-            <tr>
-                <th scope="row">{{ my_project.id }}</th>
-                <td>{{ my_project.project_name | title }}</td>
-                <td>{{ my_project.project_description | title }}</td>
-                <td>{{ my_project.project_technology | title }}</td>
-                <td>{% if my_project.is_active == True %}
-                    {{ "Active" }}
-                {% else %}
-                    {{ "Not Active" }}
-                {% endif %} </td>
-            </tr>
-        {% endfor %}
+        <tbody class="fs-5 accordion" id="accordionExample">
+        {% if projects %}
+            {% for project in projects %}
+                <tr>
+                    {% if project.project_owner == user %}
+                        <td>{% if project.add == None %}
+                            <div class="form-check ms-4">
+                                <input class="form-check-input" type="checkbox" id="myCheckbox3" disabled>
+                                <label class="form-check-label" for="myCheckbox3">
+                                </label>
+                            </div>
+                        {% elif project.add %}
+                            <div class="form-check ms-4">
+                                <input class="form-check-input" type="checkbox" id="myCheckbox" disabled>
+                                <label class="form-check-label" for="myCheckbox">
+                                </label>
+                            </div>
+                        {% else %}
+                            <div class="form-check ms-4">
+                                <input class="form-check-input " type="checkbox" id="myCheckbox2" disabled>
+                                <label class="form-check-label" for="myCheckbox2">
+                                </label>
+                            </div>
+                        {% endif %}</td>
+                        <td>{{ project.project_name }}</td>
+                        <td><a class="btn transparent-btn" data-bs-toggle="collapse" href="#collapse1{{ project.id }}"
+                               role="button"
+                               aria-expanded="false" aria-controls="collapse1">
+                            {{ project.project_description|truncatechars:20 }}
+                        </a></td>
+                        <td>{{ project.project_technology }}</td>
+                        <td>{% if project.is_active == True %}
+                            {{ "Active" }}
+                        {% else %}
+                            {{ "Not Active" }}
+                        {% endif %} </td>
+                        <td><a href="{% url 'project_update' project.id %}" class="btn btn-primary btn-sm">Update</a>
+                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal">
+                                Delete
+                            </button>
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5 fw-bold" id="exampleModalLabel">Delete Your
+                                                Project?</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body text-capitalize">
+                                            {{ project.project_name }} <a class="text-danger">Project Will Be
+                                            Deleted</a>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a href="{% url 'myproject' %}" class="btn btn-primary">Don't Delete</a>
+                                            <form action="{% url 'project_delete' project.id %}" method="POST">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    {% endif %}
+                </tr>
+                <tr>
+                <td colspan="6">
+                    <div class="collapse" id="collapse1{{ project.id }}">
+                        <div class="card card-body d-flex align-items-center justify-content-center">
+                            <div class="card-text-content">
+                                {{ project.project_description }}
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            {% endfor %}
+        {% else %}
+            <td class="bg-warning fw-bold fs-4" colspan="6">Project not Found</td>
+        {% endif %}
         </tbody>
     </table>
+    <style>
+        .card-text-content {
+            overflow: auto;
+            max-width: 90em;
+        }
 
+        #myCheckbox:disabled {
+            background-color: green;
+        }
 
+        #myCheckbox2:disabled {
+            background-color: red;
+        }
 
-{% endblock %}
+        #myCheckbox3:disabled {
+            background-color: black;
+        }
+    </style>
+{% endblock %}S

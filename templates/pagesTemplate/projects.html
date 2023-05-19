@@ -1,28 +1,110 @@
 {% extends "main.html" %}
+{% load static %}
 {% block title %} Home Page {% endblock %}
 {% block content %}
-    <table class="table mt-5 text-center table-striped">
+    {% include '_alert.html' %}
+    <table class="table text-center table-striped mt-2">
         <thead>
         <tr class="fs-4">
-            <th scope="col">#</th>
-            <th scope="col">Project Sahip name</th>
+            <th scope="col">
+                <div class="dropdown">
+                    <button class="btn btn-light dropdown-toggle" type="button" id="actionsDropdown"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <input class="form-check-input" type="checkbox" id="myCheckbox3" disabled>
+                        <label class="form-check-label" for="myCheckbox3"></label>
+                        <input class="form-check-input" type="checkbox" id="myCheckbox" disabled>
+                        <label class="form-check-label" for="myCheckbox"></label>
+                        <input class="form-check-input " type="checkbox" id="myCheckbox2" disabled>
+                        <label class="form-check-label" for="myCheckbox2"></label>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="actionsDropdown">
+                        <li><a class="dropdown-item"><input class="form-check-input" type="checkbox" id="myCheckbox"
+                                                            disabled>
+                            <label class="form-check-label" for="myCheckbox"></label>Accepted</a></li>
+                        <li><a class="dropdown-item"><input class="form-check-input " type="checkbox" id="myCheckbox2"
+                                                            disabled>
+                            <label class="form-check-label" for="myCheckbox2"></label>Not Accepted</a></li>
+                        <li><a class="dropdown-item"><input class="form-check-input" type="checkbox" id="myCheckbox3"
+                                                            disabled>
+                            <label class="form-check-label" for="myCheckbox3"></label>Not Decided</a></li>
+                    </ul>
+                </div>
+            </th>
+            <th scope="col">Project Owner Name</th>
             <th scope="col">Project Name</th>
             <th scope="col">Project Description</th>
             <th scope="col">Project Technology</th>
+            <th scope="col">Time</th>
         </tr>
         </thead>
         <tbody class="fs-5">
         {% for project in projects %}
             {% if project.is_active == True %}
                 <tr>
-                    <td>{{ project.id }}</td>
+                    <td>
+                        {% if project.add == None %}
+                            <div class="form-check ms-5">
+                                <input class="form-check-input" type="checkbox" id="myCheckbox3" disabled>
+                                <label class="form-check-label" for="myCheckbox3">
+                                </label>
+                            </div>
+                        {% elif project.add %}
+                            <div class="form-check ms-5">
+                                <input class="form-check-input" type="checkbox" id="myCheckbox" disabled>
+                                <label class="form-check-label" for="myCheckbox">
+                                </label>
+                            </div>
+                        {% else %}
+                            <div class="form-check ms-5">
+                                <input class="form-check-input " type="checkbox" id="myCheckbox2" disabled>
+                                <label class="form-check-label" for="myCheckbox2">
+                                </label>
+                            </div>
+                        {% endif %}
+                    </td>
                     <td>{{ project.project_owner }}</td>
-                    <td>{{ project.project_name | title }}</td>
-                    <td>{{ project.project_description | title }}</td>
-                    <td>{{ project.project_technology | title }}</td>
+                    <td>{{ project.project_name }}</td>
+                    <td>
+                        <a class="btn transparent-btn" data-bs-toggle="collapse" href="#collapse1{{ project.id }}"
+                           role="button"
+                           aria-expanded="false" aria-controls="collapse1">
+                            {{ project.project_description|truncatechars:20 }}
+                        </a>
+                    </td>
+                    <td>{{ project.project_technology }}</td>
+                    <td>{{ project.created_at }}</td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <div class="collapse" id="collapse1{{ project.id }}">
+                            <div class="card card-body d-flex align-items-center justify-content-center">
+                                <div class="card-text-content">
+                                    {{ project.project_description }}
+                                </div>
+                            </div>
+                        </div>
+                    </td>
                 </tr>
             {% endif %}
         {% endfor %}
         </tbody>
     </table>
+    <style>
+        .card-text-content {
+            overflow: auto;
+            max-width: 90em;
+        }
+
+        #myCheckbox:disabled {
+            background-color: green;
+        }
+
+        #myCheckbox2:disabled {
+            background-color: red;
+        }
+
+        #myCheckbox3:disabled {
+            background-color: slategray;
+        }
+    </style>
 {% endblock %}

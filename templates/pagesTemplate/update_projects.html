@@ -1,0 +1,35 @@
+{% extends "main.html" %}
+{% load static %}
+{% block title %} Update Project {% endblock %}
+{% block content %}
+    <div class="card position-absolute top-50 start-50 translate-middle" style="height: 600px;">
+        <div class="card-body position-absolute top-0 start-50 translate-middle-x bg-light"
+             style="height: 598px; width: 700px;">
+            <h5 class="text-center fw-bold fs-3">UPDATE YOUR PROJECT</h5>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="from-label fw-bold fs-5" for="{{ form.project_name.id_for_label }}">Project
+                        Name</label>
+                    {{ form.project_name }}
+                </div>
+                <div class="mb-3">
+                    <label class="from-label fw-bold fs-5" for="{{ form.project_description.id_for_label }}">Project
+                        Description</label>
+                    {{ form.project_description }}
+                </div>
+                <div class="mb-3">
+                    <label class="from-label fw-bold fs-5" for="{{ form.project_technology.id_for_label }}">Project
+                        Technology</label>
+                    {{ form.project_technology }}
+                </div>
+                <div class="mb-3">
+                    <label class="from-label fs-5" for="{{ form.is_active.id_for_label }}">Active Project</label>
+                    {{ form.is_active }}
+                </div>
+                <button type="submit" class="btn btn-success mt-1 fs-5 btn-sm">Update Your Project</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
