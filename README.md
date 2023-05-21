@@ -1,2 +1,2 @@
 # ProjectTracking
- ProjectTracking project for Trakya Üniversity
+ ProjectTracking Project
