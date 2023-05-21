@@ -41,17 +41,17 @@
                         <tr>
                             <td>{{ u.username }}</td>
                             <td>
-                                {% if not u.is_superuser and not u.is_staff %}
+                                {% if not u.is_superuser and not u.is_staff  %}
                                     <form action="{% url 'authorized' %}" method="POST">
                                         {% csrf_token %}
-                                        <button type="submit" class="btn btn-primary btn-sm" name="authorized"
+                                        <button type="submit" class="btn btn-success btn-sm" name="authorized"
                                                 value="{{ u.id }}">Authorize
                                         </button>
                                     </form>
-                                {% else %}
+                                {% else%}
                                     <form action="{% url 'authorized' %}" method="POST">
                                         {% csrf_token %}
-                                        <button type="submit" class="btn btn-success btn-sm" name="unauthorized"
+                                        <button type="submit" class="btn btn-danger btn-sm" name="unauthorized"
                                                 value="{{ u.id }}">Deauthorize
                                         </button>
                                     </form>
