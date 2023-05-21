@@ -36,7 +36,8 @@ def user_register(request):
 
 
 def user_login(request):
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and 'next' in request.GET:
+        messages.add_message(request, messages.WARNING, 'You Are Not Authorized')
         return render(request, 'pagesTemplate/projects.html')
     if request.method == 'POST':
         username = request.POST['username']

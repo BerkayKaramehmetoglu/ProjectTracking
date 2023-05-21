@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 
@@ -7,7 +7,15 @@ from .forms import MyProjectForm, MyProjectUpdateForm
 from .models import ProjectModels
 
 
-@login_required()
+def is_user(user):
+    return not user.is_superuser
+
+
+def is_admin(user):
+    return user.is_superuser
+
+
+@user_passes_test(is_user)
 def myprojects(request):
     projects = ProjectModels.objects.filter(project_owner=request.user)
     if request.method == 'POST':
@@ -34,6 +42,7 @@ def projects(request):
     })
 
 
+@user_passes_test(is_user)
 def update(request, id):
     projects = get_object_or_404(ProjectModels, pk=id)
     if request.method == 'POST':
@@ -47,6 +56,7 @@ def update(request, id):
     return render(request, 'pagesTemplate/update_projects.html', {'form': form})
 
 
+@user_passes_test(is_user)
 def delete(request, id):
     projects = get_object_or_404(ProjectModels, pk=id)
     if request.method == 'POST':
@@ -57,6 +67,7 @@ def delete(request, id):
     return render(request, 'pagesTemplate/myproject.html', {'projects': projects})
 
 
+@user_passes_test(is_admin)
 def owner_list(request):
     projects = ProjectModels.objects.all()
     if request.method == 'POST':
@@ -77,14 +88,20 @@ def owner_list(request):
         })
 
 
+@user_passes_test(is_admin)
 def authorized(request):
     users = User.objects.all()
-
     if request.method == 'POST':
         if 'authorized' in request.POST:
             user = users.filter(id=request.POST.get('authorized')).first()
             user.is_superuser = True
             user.is_staff = True
+            user.save()
+            return render(request, 'pagesTemplate/authorize.html', {'users': users})
+        elif 'unauthorized' in request.POST:
+            user = users.filter(id=request.POST.get('unauthorized')).first()
+            user.is_superuser = False
+            user.is_staff = False
             user.save()
             return render(request, 'pagesTemplate/authorize.html', {'users': users})
 

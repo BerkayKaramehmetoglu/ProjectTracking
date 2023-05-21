@@ -49,8 +49,12 @@
                                         </button>
                                     </form>
                                 {% else %}
-                                    <button class="btn btn-success btn-sm disabled">Authorized
-                                    </button>
+                                    <form action="{% url 'authorized' %}" method="POST">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-success btn-sm" name="unauthorized"
+                                                value="{{ u.id }}">Deauthorize
+                                        </button>
+                                    </form>
                                 {% endif %}
                             </td>
                         </tr>
