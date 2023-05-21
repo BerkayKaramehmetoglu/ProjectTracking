@@ -59,11 +59,12 @@ def update(request, id):
 @user_passes_test(is_user)
 def delete(request, id):
     projects = get_object_or_404(ProjectModels, pk=id)
+
     if request.method == 'POST':
         projects.delete()
-        messages.add_message(request, messages.ERROR,
-                             f'{projects.project_name} Your Project Has Been Delete')
+        messages.error(request, f'Your Project Has Been Deleted')
         return redirect('/myproject/')
+
     return render(request, 'pagesTemplate/myproject.html', {'projects': projects})
 
 

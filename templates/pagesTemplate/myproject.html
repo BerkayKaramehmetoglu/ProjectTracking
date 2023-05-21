@@ -118,14 +118,18 @@
                                                     aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body text-capitalize">
-                                            {{ project.project_name }} <a class="text-danger">Project Will Be
+                                            {{ project.project_name }}<a class="text-danger">Project Will Be
                                             Deleted</a>
                                         </div>
                                         <div class="modal-footer">
-                                            <a href="{% url 'myproject' %}" class="btn btn-primary">Don't Delete</a>
                                             <form action="{% url 'project_delete' project.id %}" method="POST">
                                                 {% csrf_token %}
-                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-primary"
+                                                            data-bs-dismiss="modal">Don't Delete
+                                                    </button>
+                                                    <button type="submit" class="btn btn-danger" value="{{ project.id }}">Delete</button>
+                                                </div>
                                             </form>
                                         </div>
                                     </div>
