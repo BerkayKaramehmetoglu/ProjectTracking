@@ -104,21 +104,21 @@
                         {% endif %} </td>
                         <td><a href="{% url 'project_update' project.id %}" class="btn btn-primary btn-sm">Update</a>
                             <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal">
+                                    data-bs-target="#exampleModal{{ project.id }}">
                                 Delete
                             </button>
-                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            <div class="modal fade" id="exampleModal{{ project.id }}" tabindex="-1" aria-labelledby="exampleModalLabel{{ project.id }}"
                                  aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h1 class="modal-title fs-5 fw-bold" id="exampleModalLabel">Delete Your
+                                            <h1 class="modal-title fs-5 fw-bold" id="exampleModalLabel{{ project.id }}">Delete Your
                                                 Project?</h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body text-capitalize">
-                                            {{ project.project_name }}<a class="text-danger">Project Will Be
+                                            {{ project.project_name }} <a class="text-danger">Project Will Be
                                             Deleted</a>
                                         </div>
                                         <div class="modal-footer">
@@ -128,7 +128,7 @@
                                                     <button type="button" class="btn btn-primary"
                                                             data-bs-dismiss="modal">Don't Delete
                                                     </button>
-                                                    <button type="submit" class="btn btn-danger" value="{{ project.id }}">Delete</button>
+                                                    <button type="submit" class="btn btn-danger">Delete</button>
                                                 </div>
                                             </form>
                                         </div>
